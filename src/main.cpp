@@ -53,16 +53,8 @@ void leFlags() {
   }
 }
 
-
-void inicializaBotoes() {
-  pinMode(buttonUp, INPUT_PULLUP);
-  pinMode(buttonDown, INPUT_PULLUP);
-  pinMode(buttonSelect, INPUT_PULLUP);
-  pinMode(D8, OUTPUT);
-}
-
-
 MaquinaEstados *maquinaEstados;
+
 void setup() {
   // put your setup code here, to run once:
   maquinaEstados = MaquinaEstados::getInstance();

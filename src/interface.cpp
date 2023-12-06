@@ -7,20 +7,33 @@ enum {
     BOTAO_DEFAULT
 };
 
+int buttonUp = D3;    // Botão para cima
+int buttonDown = D5;  // Botão para baixo
+int buttonSelect = D4;// Botão de seleção
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
 void tom(int frequencia, int duracao){
   float periodo = 1000.0/frequencia; //Periodo em ms
-  for (int i = 0; i< duracao/(periodo);i++){ //Executa a rotina de dentro o tanta de vezes que a frequencia desejada cabe dentro da duracao
-    digitalWrite(D8,HIGH);
+  for (int i = 0; i < duracao/(periodo); i++){ //Executa a rotina de dentro o tanta de vezes que a frequencia desejada cabe dentro da duracao
+    digitalWrite(D8, HIGH);
     delayMicroseconds(periodo*500); //Metade do periodo em ms
     digitalWrite(D8, LOW);
     delayMicroseconds(periodo*500);
   }
 }
 
+void inicializaBotoes() {
+  pinMode(buttonUp, INPUT_PULLUP);
+  pinMode(buttonDown, INPUT_PULLUP);
+  pinMode(buttonSelect, INPUT_PULLUP);
+  pinMode(D8, OUTPUT);
+}
+
 uint8_t processaBotao() {
     if (digitalRead(buttonUp) == LOW) {
         tom(440, 200); 
-        // Debounce
+            // Debounce
         return BOTAO_CIMA;
     }
     if (digitalRead(buttonDown) == LOW) {
@@ -34,13 +47,6 @@ uint8_t processaBotao() {
     }
     return BOTAO_DEFAULT;
 }
-
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-
-
-int buttonUp = D3;    // Botão para cima
-int buttonDown = D5;  // Botão para baixo
-int buttonSelect = D4;// Botão de seleção
 
 void inicializaLcd() {
   lcd.init();
@@ -433,19 +439,12 @@ void TelaFuncoes::processarEntrada() {
         } else{
             Serial.print("Funcao chamada: ");
             Serial.println(dispositivo.funcoes[opcaoAtual-1]);
-            if (chamarFuncao(dispositivo.macAddress,dispositivo.funcoes[opcaoAtual-1])) {
-                lcd.clear();
-                lcd.setCursor(0, 0);
-                lcd.print("Funcao");
-                lcd.setCursor(0,1);
-                lcd.print("chamada!");
-            } else {
-                lcd.clear();
-                lcd.setCursor(0, 0);
-                lcd.print("Dispositivo");
-                lcd.setCursor(0,1);
-                lcd.print("Offline");
-            }
+            chamarFuncao(dispositivo.macAddress,dispositivo.funcoes[opcaoAtual-1]);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Funcao");
+            lcd.setCursor(0,1);
+            lcd.print("chamada!");
             delay(1000);
             atualizar=true;
         }
