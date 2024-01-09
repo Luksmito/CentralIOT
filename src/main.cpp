@@ -74,10 +74,9 @@ void setup() {
 
 
 void loop() {
-  // put your main code here, to run repeatedly:
   maquinaEstados->loop();
-  if (Serial.available() > 0) { // Verifica se há dados disponíveis para leitura
-    char receivedChar = Serial.read(); // Lê o próximo caractere disponível na porta serial
+  if (Serial.available() > 0) { 
+    char receivedChar = Serial.read(); 
 
     if (receivedChar == '1') {
       Serial.println(receivedChar);

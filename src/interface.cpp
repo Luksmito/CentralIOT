@@ -13,6 +13,12 @@ int buttonSelect = D4;// Botão de seleção
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
+void clearAndPrintHeader(String header) {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print(header);
+}
+
 void tom(int frequencia, int duracao){
   float periodo = 1000.0/frequencia; //Periodo em ms
   for (int i = 0; i < duracao/(periodo); i++){ //Executa a rotina de dentro o tanta de vezes que a frequencia desejada cabe dentro da duracao
@@ -26,7 +32,7 @@ void tom(int frequencia, int duracao){
 void inicializaBotoes() {
   pinMode(buttonUp, INPUT_PULLUP);
   pinMode(buttonDown, INPUT_PULLUP);
-  pinMode(buttonSelect, INPUT_PULLUP);
+  pinMode(buttonSelect, INPUT_PULLUP);  
   pinMode(D8, OUTPUT);
 }
 
@@ -53,13 +59,9 @@ void inicializaLcd() {
   lcd.backlight();
 }
 
-void EstadoBase::renderizar() {
-    // Deixe vazio ou adicione alguma lógica padrão, se necessário
-}
+void EstadoBase::renderizar() {}
 
-void EstadoBase::processarEntrada() {
-    // Deixe vazio ou adicione alguma lógica padrão, se necessário
-}
+void EstadoBase::processarEntrada() {}
 
 MaquinaEstados* MaquinaEstados::instance = nullptr;
 
@@ -94,15 +96,11 @@ void MaquinaEstados::loop() {
 // Outros métodos de gestão de estado...
 
 
-TelaMenu::TelaMenu(int v1, int v2) : EstadoBase(v1, v2), atualizar(true) {
-    // Inicialização de membros, se necessário
-}
+TelaMenu::TelaMenu(int v1, int v2) : EstadoBase(v1, v2), atualizar(true) {}
 
 void TelaMenu::renderizar() {
      if(atualizar) {
-          lcd.clear();
-          lcd.setCursor(0, 0);
-          lcd.print("Menu:");
+          clearAndPrintHeader("Menu: ");
           lcd.setCursor(0,1);
           switch (opcaoAtual) {
             case 0:
@@ -211,9 +209,7 @@ void CadastrarDispositivos::processarEntrada() {
     // Se necessário, adicione lógica para outras ações ou entradas.
 }   
 
-DeletarDispositivos::DeletarDispositivos(int v1, int v2) : EstadoBase(v1, v2), atualizar(true) {
-    // Inicialização de membros, se necessário
-}
+DeletarDispositivos::DeletarDispositivos(int v1, int v2) : EstadoBase(v1, v2), atualizar(true) {}
 
 void DeletarDispositivos::renderizar() {
      if(atualizar) {
@@ -274,9 +270,7 @@ void DeletarDispositivos::processarEntrada() {
         } else {
             uint8_t res = Memoria::deletarDispositivo(ds[opcaoAtual-1].macAddress);
             if (res == DISPOSITIVO_DELETADO) {
-                lcd.clear();
-                lcd.setCursor(0,0);
-                lcd.print("Dispositivo");
+                clearAndPrintHeader("Dispositivo");
                 lcd.setCursor(0,1);
                 lcd.print("Deletado");
                 delay(1000);
@@ -304,18 +298,14 @@ void DeletarDispositivos::processarEntrada() {
     
 }
 
-TelaDispositivos::TelaDispositivos(int v1, int v2) : EstadoBase(v1, v2), atualizar(true) {
-    // Inicialização de membros, se necessário
-}
+TelaDispositivos::TelaDispositivos(int v1, int v2) : EstadoBase(v1, v2), atualizar(true) {}
 
 void TelaDispositivos::renderizar() {
      if(atualizar) {
         limparDispositivos();
         uint8_t qt_dispositivos = Memoria::retornaDispositivos(ds);
         opcoes=qt_dispositivos+1;
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Dispositivos:");
+        clearAndPrintHeader("Dispositivos: ");
         lcd.setCursor(0,1);
         switch (opcaoAtual) {
         case 0:
@@ -379,9 +369,7 @@ void TelaDispositivos::processarEntrada() {
     
 }
 
-TelaFuncoes::TelaFuncoes(int v1, int v2, Dispositivo d) : EstadoBase(v1, v2), atualizar(true), dispositivo(d) {
-    // Inicialização de membros, se necessário
-}
+TelaFuncoes::TelaFuncoes(int v1, int v2, Dispositivo d) : EstadoBase(v1, v2), atualizar(true), dispositivo(d) {}
 
 void TelaFuncoes::renderizar() {
      if(atualizar) {
@@ -392,9 +380,7 @@ void TelaFuncoes::renderizar() {
         }
         }
         opcoes+=1;
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Funcoes:");
+       clearAndPrintHeader("Funcoes: ");
         lcd.setCursor(0,1);
         switch (opcaoAtual) {
         case 0:

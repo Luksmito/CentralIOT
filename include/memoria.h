@@ -30,7 +30,6 @@ void leNome(uint8_t enderecoNome, char nome[10]);
 
 void leFuncoes(uint8_t enderecoFuncoes, char funcoes[3][10]);
 
-
 void leMac(uint8_t enderecoMac, uint8_t mac[6]);
 
 bool macsIguais(uint8_t mac1[6], uint8_t mac2[6]);

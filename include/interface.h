@@ -8,10 +8,6 @@
 #include "memoria.h"
 
 // Declaração de variáveis globais externas
-/*LiquidCrystal_I2C lcd;
-int buttonUp;    // Botão para cima
-int buttonDown;  // Botão para baixo
-int buttonSelect;// Botão de seleção*/
 
 // Protótipos de funções de inicialização
 void inicializaLcd();
@@ -30,7 +26,6 @@ public:
     // Métodos virtuais puros que devem ser implementados pelas subclasses
     virtual void renderizar() = 0;
     virtual void processarEntrada() = 0;
-    // Outros métodos comuns...
     
     // Destrutor virtual para permitir a destruição correta dos objetos derivados
     virtual ~EstadoBase() {}
@@ -55,7 +50,7 @@ public:
 // Classe representando a Tela de Menu, derivada da classe EstadoBase
 class TelaMenu : public EstadoBase {
 public:
-    bool atualizar = true;
+    bool atualizar;
 
     // Construtor da classe TelaMenu
     TelaMenu(int v1, int v2);
@@ -70,7 +65,7 @@ class CadastrarDispositivos : public EstadoBase {
 public:
     long long int inicio;
     long long int atual;
-    bool atualizar = true;
+    bool atualizar;
 
     CadastrarDispositivos(int v1, int v2);
 
@@ -80,7 +75,7 @@ public:
 
 class DeletarDispositivos : public EstadoBase {
 public:
-    bool atualizar = true;
+    bool atualizar;
 
     DeletarDispositivos(int v1, int v2);
 
@@ -90,7 +85,7 @@ public:
 
 class TelaDispositivos : public EstadoBase {
 public:
-    bool atualizar = true;
+    bool atualizar;
 
     TelaDispositivos(int v1, int v2);
 
@@ -101,7 +96,7 @@ public:
 class TelaFuncoes : public EstadoBase {
 public:
     Dispositivo dispositivo;
-    bool atualizar = true;
+    bool atualizar;
 
     TelaFuncoes(int v1, int v2, Dispositivo d);
 
